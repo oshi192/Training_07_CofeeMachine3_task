@@ -16,17 +16,14 @@ public class Servlet extends HttpServlet {
     private Map<String, Command> commands = new HashMap<>();
 
 
-
-    public void init(ServletConfig servletConfig){
+    public void init(ServletConfig servletConfig) {
 
         servletConfig.getServletContext()
                 .setAttribute("loggedUsers", new HashSet<String>());
 
-        commands.put("logout",
-                new LogOutCommand());
-        commands.put("login",
-                new LoginCommand());
-        commands.put("exception" , new ExceptionCommand());
+        commands.put("logout", new LogOutCommand());
+        commands.put("login", new LoginCommand());
+        commands.put("exception", new ExceptionCommand());
     }
 
     public void doGet(HttpServletRequest request,
@@ -44,11 +41,11 @@ public class Servlet extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getRequestURI();
-        path = path.replaceAll(".*/coffee/" , "");
-        Command command = commands.getOrDefault(path ,
-                (r)->"/index.jsp");
+        path = path.replaceAll(".*/coffee/", "");
+        Command command = commands.getOrDefault(path,(r) -> "/index.jsp");
         System.out.println(command.getClass().getName());
         String page = command.execute(request);
-        request.getRequestDispatcher(page).forward(request,response);
+        System.out.println("page: "+page);
+        request.getRequestDispatcher(page).forward(request, response);
     }
 }

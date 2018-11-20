@@ -11,15 +11,12 @@ public class LoginCommand implements Command{
         String name = request.getParameter("name");
         String pass = request.getParameter("pass");
 
-
-
-
         if( name == null || name.equals("") || pass == null || pass.equals("")  ){
-            //System.out.println("Not");
+            System.out.println("Not");
             return "/login.jsp";
         }
         System.out.println(name + " " + pass);
-        //System.out.println("Yes!");
+        System.out.println("Yes!");
 //todo: check login with DB
 
         if(CommandUtility.checkUserIsLogged(request, name)){

@@ -20,14 +20,24 @@ public class AuthFilter implements Filter {
         final HttpServletRequest req = (HttpServletRequest) request;
         final HttpServletResponse res = (HttpServletResponse) response;
 
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         ServletContext context = request.getServletContext();
         System.out.println(session);
         System.out.println(session.getAttribute("role"));
         System.out.println(context.getAttribute("loggedUsers"));
 
+        String loginURI = req.getContextPath() + "/login";
 
-        filterChain.doFilter(request,response);
+        boolean loggedIn = session != null && session.getAttribute("user") != null;
+        boolean loginRequest = req.getRequestURI().equals(loginURI);
+
+        if (loggedIn || loginRequest) {
+            System.out.println("logged in or login request");
+            filterChain.doFilter(request, response);
+        } else {
+            System.out.println("redirect to "+loginURI);
+            res.sendRedirect(loginURI);
+        }
     }
 
     @Override
